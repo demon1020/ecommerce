@@ -1,9 +1,5 @@
-import 'dart:convert';
-
-import 'package:flutter/services.dart';
+import 'package:ecommerce/features/home/data/models/product_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-import '../../../features/home/data/models/my_product_response_model.dart';
 
 class HiveService {
   static const String productsBoxName = 'productsBox';
@@ -16,8 +12,9 @@ class HiveService {
     await Hive.initFlutter();
 
     // Register Hive adapters
-    Hive.registerAdapter(MyProductResponseModelAdapter());
     Hive.registerAdapter(ProductAdapter());
+    Hive.registerAdapter(PriceAdapter());
+    Hive.registerAdapter(AmountAdapter());
     Hive.registerAdapter(SellerAdapter());
     await Hive.openBox<Product>(productsBoxName);
   }
@@ -73,21 +70,21 @@ class HiveService {
     await Hive.close();
   }
 
-  static Future<void> saveProductsFromJson() async {
-    final box = Hive.box<Product>(productsBoxName);
-
-    if (box.isEmpty) {
-      // Load JSON from assets
-      final String jsonString =
-          await rootBundle.loadString('assets/products.json');
-      final jsonData = json.decode(jsonString);
-      final MyProductResponseModel responseModel =
-          MyProductResponseModel.fromJson(jsonData);
-
-      // Save each product into the Hive box
-      for (var product in responseModel.products ?? []) {
-        box.put(product.id, product);
-      }
-    }
-  }
+  // static Future<void> saveProductsFromJson() async {
+  //   final box = Hive.box<Product>(productsBoxName);
+  //
+  //   if (box.isEmpty) {
+  //     // Load JSON from assets
+  //     final String jsonString =
+  //         await rootBundle.loadString('assets/products.json');
+  //     final jsonData = json.decode(jsonString);
+  //     final MyProductResponseModel responseModel =
+  //         MyProductResponseModel.fromJson(jsonData);
+  //
+  //     // Save each product into the Hive box
+  //     for (var product in responseModel.products ?? []) {
+  //       box.put(product.id, product);
+  //     }
+  //   }
+  // }
 }

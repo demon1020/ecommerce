@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../home/data/models/my_product_response_model.dart';
+import '../../../home/data/models/product_model.dart';
 
 class CheckoutState extends Equatable {
   final List<Product> cart;

@@ -1,13 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../home/data/models/my_product_response_model.dart';
+import '../../../home/data/models/product_model.dart';
 import 'checkout_event.dart';
 import 'checkout_state.dart';
 
 class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   CheckoutBloc() : super(CheckoutState(cart: [], totalAmount: 0));
 
-  @override
   Stream<CheckoutState> mapEventToState(CheckoutEvent event) async* {
     if (event is AddProductToCart) {
       final updatedCart = List<Product>.from(state.cart)..add(event.product);
@@ -25,6 +24,9 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   }
 
   int _calculateTotalAmount(List<Product> cart) {
-    return cart.fold(0, (sum, product) => sum + (product.price ?? 0));
+    return cart.fold(
+        0,
+        (sum, product) =>
+            sum + (int.parse(product.price!.totalAmount!.amount!) ?? 0));
   }
 }

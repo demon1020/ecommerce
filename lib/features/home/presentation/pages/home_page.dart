@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/di/injector.dart';
+import '../../../checkout/presentation/manager/checkout_bloc.dart';
+import '../../../checkout/presentation/manager/checkout_event.dart';
 import '../manager/home_bloc.dart';
 import '../manager/home_event.dart';
 import '../manager/home_state.dart';
@@ -93,7 +95,11 @@ class _HomePageState extends State<HomePage> {
                       subtitle: Text(
                           'Price: \$${product.price ?? 0}\nSeller: ${product.seller?.username ?? ''}'),
                       trailing: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          context
+                              .read<CheckoutBloc>()
+                              .add(AddProductToCart(product));
+                        },
                         child: Text('Buy Now'),
                       ),
                     ),

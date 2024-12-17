@@ -30,7 +30,7 @@ class CheckoutPage extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final product = state.cart[index];
                           return ListTile(
-                            title: Text(product.name ?? 'No Name'),
+                            title: Text(product.title ?? 'No Name'),
                             subtitle: Text('\$${product.price}'),
                             trailing: IconButton(
                               icon: Icon(Icons.remove_circle),

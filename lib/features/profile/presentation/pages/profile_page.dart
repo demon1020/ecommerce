@@ -53,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       ...state.productsListed.map(
                         (product) => ListTile(
-                          title: Text(product.name ?? 'No Name'),
+                          title: Text(product.title ?? 'No Name'),
                           subtitle: Text('\$${product.price}'),
                         ),
                       ),
@@ -65,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       ...state.productsPurchased.map(
                         (product) => ListTile(
-                          title: Text(product.name ?? 'No Name'),
+                          title: Text(product.title ?? 'No Name'),
                           subtitle: Text('\$${product.price}'),
                         ),
                       ),

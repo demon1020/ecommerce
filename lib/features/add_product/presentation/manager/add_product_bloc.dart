@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/data/repositories/hive_service.dart';
-import '../../../home/data/models/my_product_response_model.dart';
+import '../../../home/data/models/product_model.dart';
 import 'add_product_event.dart';
 import 'add_product_state.dart';
 
@@ -19,17 +19,16 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
     try {
       // Create Product object
       final product = Product(
-        id: DateTime.now().millisecondsSinceEpoch,
-        name: event.name,
-        price: event.price,
-        seller: Seller.SELLER_A,
-        imageUrl: event.imagePath,
+        productId: DateTime.now().millisecondsSinceEpoch,
+        title: event.name,
+        price: Price(totalAmount: Amount(amount: event.price.toString())),
+        seller: Seller(username: "Ram"),
       );
 
       // Save to Hive
       final box =
           await HiveService.openBox<Product>(HiveService.productsBoxName);
-      box.put(product.id, product);
+      box.put(product.productId, product);
 
       emit(AddProductSuccess());
     } catch (e) {

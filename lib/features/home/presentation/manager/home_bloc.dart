@@ -27,30 +27,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
       result.fold(
         (l) => emit(ProductError(l.message)),
-        (r) => emit(ProductLoaded(products: r, hasReachedMax: true)),
+        (r) => emit(ProductLoaded(products: r, hasReachedMax: false)),
       );
-
-      // // Simulate fetching paginated data
-      // final box =
-      //     await HiveService.openBox<Product>(HiveService.productsBoxName);
-      // final allProducts = box.values.toList();
-      // final startIndex = (event.page - 1) * itemsPerPage;
-      // final endIndex = startIndex + itemsPerPage;
-      //
-      // final productsToLoad = allProducts.sublist(startIndex,
-      //     endIndex > allProducts.length ? allProducts.length : endIndex);
-      //
-      // final hasReachedMax = productsToLoad.length < itemsPerPage;
-      //
-      // if (state is ProductLoaded) {
-      //   final previousProducts = (state as ProductLoaded).products;
-      //   emit(ProductLoaded(
-      //       products: previousProducts + productsToLoad,
-      //       hasReachedMax: hasReachedMax));
-      // } else {
-      //   emit(ProductLoaded(
-      //       products: productsToLoad, hasReachedMax: hasReachedMax));
-      // }
     } catch (e) {
       emit(ProductError(e.toString()));
     }

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../home/data/models/my_product_response_model.dart';
+import '../../../home/data/models/product_model.dart';
 
 abstract class CheckoutEvent extends Equatable {
   @override

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../home/data/models/my_product_response_model.dart';
+import '../../../home/data/models/product_model.dart';
 import 'profile_event.dart';
 import 'profile_state.dart';
 
@@ -14,11 +14,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       // Mock profile data for the purpose of this example
       final productsListed = [
-        Product(name: 'Product 1', price: 20),
-        Product(name: 'Product 2', price: 30),
+        Product(
+            title: 'Product 1',
+            price: Price(totalAmount: Amount(amount: "20"))),
+        Product(
+            title: 'Product 2',
+            price: Price(totalAmount: Amount(amount: "30"))),
       ];
       final productsPurchased = [
-        Product(name: 'Product 3', price: 50),
+        Product(
+            title: 'Product 3',
+            price: Price(totalAmount: Amount(amount: "50"))),
       ];
 
       // Emit the new profile state
