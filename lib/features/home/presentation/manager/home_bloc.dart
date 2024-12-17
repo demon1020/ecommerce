@@ -1,4 +1,4 @@
-import 'package:ecommerce/features/home/data/models/product_response_model.dart';
+import 'package:ecommerce/features/home/data/models/product_model.dart';
 import 'package:ecommerce/features/home/domain/use_cases/product_use_case.dart';
 
 import '../../../../core.dart';
@@ -22,7 +22,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       emit(ProductLoading());
 
-      Either<AppException, List<ProductResponseModel>> result =
+      Either<AppException, List<Product>> result =
           await productUseCase.execute(event.page);
 
       result.fold(

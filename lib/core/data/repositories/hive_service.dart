@@ -7,6 +7,8 @@ import '../../../features/home/data/models/my_product_response_model.dart';
 
 class HiveService {
   static const String productsBoxName = 'productsBox';
+  static const String cartProductsBoxName = 'cartProductsBoxName';
+  static const String sellerProductsBoxName = 'sellerProductsBoxName';
 
   /// Initialize Hive and register adapters
   static Future<void> init() async {

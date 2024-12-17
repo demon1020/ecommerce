@@ -1,16 +1,36 @@
 import 'dart:convert';
 
-class ProductResponseModel {
+import 'package:hive/hive.dart';
+
+part 'product_model.g.dart';
+
+@HiveType(typeId: 0)
+class Product {
+  @HiveField(0)
   int? productId;
+
+  @HiveField(1)
   String? title;
+
+  @HiveField(2)
   String? url;
+
+  @HiveField(3)
   String? image;
+
+  @HiveField(4)
   String? brand;
+
+  @HiveField(5)
   String? size;
+
+  @HiveField(6)
   Price? price;
+
+  @HiveField(7)
   Seller? seller;
 
-  ProductResponseModel({
+  Product({
     this.productId,
     this.title,
     this.url,
@@ -21,13 +41,11 @@ class ProductResponseModel {
     this.seller,
   });
 
-  factory ProductResponseModel.fromRawJson(String str) =>
-      ProductResponseModel.fromJson(json.decode(str));
+  factory Product.fromRawJson(String str) => Product.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ProductResponseModel.fromJson(Map<String, dynamic> json) =>
-      ProductResponseModel(
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
         productId: json["productId"],
         title: json["title"],
         url: json["url"],
@@ -50,12 +68,12 @@ class ProductResponseModel {
       };
 }
 
+@HiveType(typeId: 1)
 class Price {
+  @HiveField(0)
   Amount? totalAmount;
 
-  Price({
-    this.totalAmount,
-  });
+  Price({this.totalAmount});
 
   factory Price.fromRawJson(String str) => Price.fromJson(json.decode(str));
 
@@ -72,12 +90,12 @@ class Price {
       };
 }
 
+@HiveType(typeId: 2)
 class Amount {
+  @HiveField(0)
   String? amount;
 
-  Amount({
-    this.amount,
-  });
+  Amount({this.amount});
 
   factory Amount.fromRawJson(String str) => Amount.fromJson(json.decode(str));
 
@@ -92,14 +110,18 @@ class Amount {
       };
 }
 
-enum CurrencyCode { USD }
-
-final currencyCodeValues = EnumValues({"USD": CurrencyCode.USD});
-
+@HiveType(typeId: 3)
 class Seller {
+  @HiveField(0)
   int? userId;
+
+  @HiveField(1)
   String? username;
+
+  @HiveField(2)
   String? profile;
+
+  @HiveField(3)
   String? profilePicture;
 
   Seller({
@@ -127,6 +149,11 @@ class Seller {
         "profilePicture": profilePicture,
       };
 }
+
+// Enum for currency code
+enum CurrencyCode { USD }
+
+final currencyCodeValues = EnumValues({"USD": CurrencyCode.USD});
 
 class EnumValues<T> {
   Map<String, T> map;

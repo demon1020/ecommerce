@@ -1,4 +1,4 @@
-import 'package:ecommerce/features/home/data/models/product_response_model.dart';
+import 'package:ecommerce/features/home/data/models/product_model.dart';
 
 import '../../core.dart';
 // import '../../features/login/data/models/login_response_model.dart';
@@ -27,10 +27,9 @@ class Parser {
     }
   }
 
-  static Future<List<ProductResponseModel>> parseProductResponse(
-      String responseBody) async {
+  static Future<List<Product>> parseProductResponse(String responseBody) async {
     final List<dynamic> jsonData = json.decode(responseBody);
     print(jsonData);
-    return jsonData.map((data) => ProductResponseModel.fromJson(data)).toList();
+    return jsonData.map((data) => Product.fromJson(data)).toList();
   }
 }

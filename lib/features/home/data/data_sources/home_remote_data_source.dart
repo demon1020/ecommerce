@@ -1,4 +1,4 @@
-import 'package:ecommerce/features/home/data/models/product_response_model.dart';
+import 'package:ecommerce/features/home/data/models/product_model.dart';
 
 import '../../../../core.dart';
 
@@ -7,7 +7,7 @@ class HomeRemoteDataSource {
 
   HomeRemoteDataSource(this._apiServices);
 
-  Future<Either<AppException, List<ProductResponseModel>>> fetchProductList(
+  Future<Either<AppException, List<Product>>> fetchProductList(
       dynamic request) async {
     return await _apiServices.getApi(
       ApiUrl.productsApi,

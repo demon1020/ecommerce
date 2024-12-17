@@ -6,7 +6,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await HiveService.init();
-  await HiveService.saveProductsFromJson();
+  // await HiveService.saveProductsFromJson();
 
   runApp(const App());
 }
