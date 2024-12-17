@@ -1,0 +1,61 @@
+{
+  "page": 1,
+  "products": [
+    {
+      "id": 1,
+      "name": "Product 1",
+      "price": 100,
+      "seller": "Seller A",
+      "imageUrl": "https://via.placeholder.com/150"
+    },
+    {
+      "id": 2,
+      "name": "Product 2",
+      "price": 200,
+      "seller": "Seller B",
+      "imageUrl": "https://via.placeholder.com/150"
+    },
+    {
+      "id": 1,
+      "name": "Product 1",
+      "price": 100,
+      "seller": "Seller A",
+      "imageUrl": "https://via.placeholder.com/150"
+    },
+    {
+      "id": 2,
+      "name": "Product 2",
+      "price": 200,
+      "seller": "Seller B",
+      "imageUrl": "https://via.placeholder.com/150"
+    },
+    {
+      "id": 1,
+      "name": "Product 1",
+      "price": 100,
+      "seller": "Seller A",
+      "imageUrl": "https://via.placeholder.com/150"
+    },
+    {
+      "id": 2,
+      "name": "Product 2",
+      "price": 200,
+      "seller": "Seller B",
+      "imageUrl": "https://via.placeholder.com/150"
+    },
+    {
+      "id": 1,
+      "name": "Product 1",
+      "price": 100,
+      "seller": "Seller A",
+      "imageUrl": "https://via.placeholder.com/150"
+    },
+    {
+      "id": 2,
+      "name": "Product 2",
+      "price": 200,
+      "seller": "Seller B",
+      "imageUrl": "https://via.placeholder.com/150"
+    }
+  ]
+}
