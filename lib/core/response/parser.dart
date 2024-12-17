@@ -1,3 +1,5 @@
+import 'package:ecommerce/features/home/data/models/product_response_model.dart';
+
 import '../../core.dart';
 // import '../../features/login/data/models/login_response_model.dart';
 
@@ -12,16 +14,7 @@ class Parser {
         case HttpStatus.ok:
         case HttpStatus.created:
           {
-            dynamic result = await compute(callback, jsonEncode(response.data));
-            if (result.status == false) {
-              message = response.data["message"] ?? "";
-              return Left(
-                ValidationError(
-                  statusCode: response.statusCode,
-                  message: message,
-                ),
-              );
-            }
+            dynamic result = await compute(callback, response.data.toString());
             return Right(result as Q);
           }
 
@@ -34,12 +27,10 @@ class Parser {
     }
   }
 
-  // Parse login response with Dio (can be customized for other responses as needed)
-  // static Future<BaseApiResponse<LoginResponseModel>> parseLogInResponse(
-  //     String responseBody) async {
-  //   return BaseApiResponse<LoginResponseModel>.fromJson(
-  //     jsonDecode(responseBody),
-  //     (data) => LoginResponseModel.fromJson(data),
-  //   );
-  // }
+  static Future<List<ProductResponseModel>> parseProductResponse(
+      String responseBody) async {
+    final List<dynamic> jsonData = json.decode(responseBody);
+    print(jsonData);
+    return jsonData.map((data) => ProductResponseModel.fromJson(data)).toList();
+  }
 }

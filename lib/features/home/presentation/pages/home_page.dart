@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/di/injector.dart';
 import '../manager/home_bloc.dart';
 import '../manager/home_event.dart';
 import '../manager/home_state.dart';
@@ -18,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _productBloc = ProductBloc();
+    _productBloc = sl<ProductBloc>();
     _productBloc.add(LoadProductsEvent(initialPage));
 
     _scrollController.addListener(() {
@@ -77,20 +78,20 @@ class _HomePageState extends State<HomePage> {
                     elevation: 2,
                     margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: ListTile(
-                      leading: product.imageUrl != null
+                      leading: product.image != null
                           ? Image.network(
-                              product.imageUrl!,
+                              product.image!,
                               width: 50,
                               height: 50,
                               fit: BoxFit.cover,
                             )
                           : Icon(Icons.image_not_supported, size: 50),
                       title: Text(
-                        product.name ?? 'No Name',
+                        product.title ?? 'No Name',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(
-                          'Price: \$${product.price ?? 0}\nSeller: ${product.seller?.name ?? ''}'),
+                          'Price: \$${product.price ?? 0}\nSeller: ${product.seller?.username ?? ''}'),
                       trailing: ElevatedButton(
                         onPressed: () {},
                         child: Text('Buy Now'),

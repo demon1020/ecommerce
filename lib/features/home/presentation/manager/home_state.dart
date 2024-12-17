@@ -1,6 +1,5 @@
+import 'package:ecommerce/features/home/data/models/product_response_model.dart';
 import 'package:equatable/equatable.dart';
-
-import '../../data/models/my_product_response_model.dart';
 
 abstract class ProductState extends Equatable {
   @override
@@ -12,7 +11,7 @@ class ProductInitial extends ProductState {}
 class ProductLoading extends ProductState {}
 
 class ProductLoaded extends ProductState {
-  final List<Product> products;
+  final List<ProductResponseModel> products;
   final bool hasReachedMax;
 
   ProductLoaded({required this.products, required this.hasReachedMax});

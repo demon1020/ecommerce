@@ -1,3 +1,4 @@
+import 'package:ecommerce/features/home/domain/use_cases/product_use_case.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../core.dart';
@@ -13,7 +14,8 @@ class Providers {
   static List<SingleChildWidget> getAllProviders() {
     return [
       // BlocProvider(create: (context) => LoginBloc(sl<LoginUseCase>())),
-      BlocProvider<ProductBloc>(create: (context) => ProductBloc()),
+      BlocProvider<ProductBloc>(
+          create: (context) => ProductBloc(sl<ProductUseCase>())),
       BlocProvider<AddProductBloc>(create: (context) => AddProductBloc()),
       BlocProvider<CheckoutBloc>(create: (context) => CheckoutBloc()),
       BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),

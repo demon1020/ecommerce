@@ -3,7 +3,7 @@ import '/core.dart';
 Duration apiTimeOut = const Duration(seconds: 60);
 
 class NetworkApiService extends BaseApiServices {
-  final Dio _dio = Dio(BaseOptions(baseUrl: ApiUrl.baseUrl));
+  final Dio _dio = Dio(BaseOptions(baseUrl: ApiUrl.host));
   final connectivity = sl<ConnectivityServiceRepositoryImpl>();
 
   NetworkApiService() {
