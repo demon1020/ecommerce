@@ -85,6 +85,8 @@ User data (products, cart, and purchase history) is stored locally using **Hive*
 
 ## Bonus
 
+## Firebase integration done
+
 ## Local Search functionality allows users to search for products by name or description. The search results are filtered dynamically as the user types, ensuring a fast and responsive experience.
 
 ## Image Caching
