@@ -1,7 +1,7 @@
 import '../../core.dart';
 
 class AppColor {
-  static const primary = Color(0xFFE75B23);
+  static const primary = Colors.blueAccent;
   static const primarytextwhitecolor = Color(0xFFFFFFFF);
   static const secondarytextcolor = Color(0xFF7C7D82);
   static const blackbackgroundcolor = Color(0xFF0f0d0e);
