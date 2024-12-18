@@ -4,7 +4,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 class HiveService {
   static const String productsBoxName = 'productsBox';
   static const String cartProductsBoxName = 'cartProductsBoxName';
-  static const String sellerProductsBoxName = 'sellerProductsBoxName';
+  static const String salesBox = 'salesBox';
+  static const String purchaseBox = 'purchaseBox';
 
   /// Initialize Hive and register adapters
   static Future<void> init() async {
@@ -89,13 +90,13 @@ class HiveService {
   // }
 
   Future<void> addProductToCart(Product product) async {
-    final box = await Hive.openBox<Product>(cartProductsBoxName);
+    final box = await openBox<Product>(cartProductsBoxName);
     await box.put(
         int.parse(product.productId.toString().substring(5, 10)), product);
   }
 
   Future<void> removeProductFromCart(Product product) async {
-    final box = await Hive.openBox<Product>(cartProductsBoxName);
+    final box = await openBox<Product>(cartProductsBoxName);
     final key = int.parse(product.productId.toString().substring(5, 10));
     if (box.containsKey(key)) {
       await box.delete(key);
@@ -105,7 +106,7 @@ class HiveService {
   }
 
   Future<List<Product>> getCartProducts() async {
-    final box = await Hive.openBox<Product>(cartProductsBoxName);
+    final box = await openBox<Product>(cartProductsBoxName);
     return box.values.toList();
   }
 }

@@ -64,8 +64,13 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
 
     try {
       RazorpayService razorpayService = RazorpayService(
-        paymentSuccessCallback: (response) {
+        paymentSuccessCallback: (response) async {
           // Handle payment success
+          final cartProducts = await hiveService.getCartProducts();
+          final purchase =
+              await HiveService.openBox<Product>(HiveService.purchaseBox);
+          await purchase.addAll(cartProducts);
+          await HiveService.clear<Product>(HiveService.cartProductsBoxName);
           print("Payment Success: ${response.paymentId}");
           emit(CheckoutPaymentSuccess());
         },

@@ -42,7 +42,7 @@ class RazorpayService {
       String? logo}) async {
     var options = {
       'key': dotenv.env["KEY_ID"],
-      'amount': amount * 100, // Convert to paisa
+      'amount': (amount * 100).toInt(), // Convert to paisa
       'name': companyName,
       // 'order_id': orderId,
       'description': paymentDescription,

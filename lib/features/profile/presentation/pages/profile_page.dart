@@ -36,10 +36,26 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Items Sold: ${state.itemsSold}',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                      //Items Bought
+                      Expanded(
+                        child: FutureBuilder<List<Product>>(
+                          future: HiveService.getAll<Product>(
+                              HiveService.purchaseBox),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                  child: Text('Error: ${snapshot.error}'));
+                            } else if (snapshot.hasData) {
+                              List<Product> products = snapshot.data!;
+                              return Text(snapshot.data!.length.toString());
+                            } else {
+                              return Center(child: Text('Create products!'));
+                            }
+                          },
+                        ),
                       ),
                       SizedBox(height: 10),
                       Text(
