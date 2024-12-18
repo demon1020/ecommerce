@@ -112,21 +112,22 @@ class _AppTextFieldState extends State<AppTextField> {
                 EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14.sp),
-              borderSide: const BorderSide(
-                  width: 1, color: AppColor.textfieldbordercolor),
+              borderSide:
+                  const BorderSide(width: 1, color: AppColor.textcolornew),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14.sp),
-              borderSide: const BorderSide(width: 1, color: AppColor.hintcolor),
+              borderSide:
+                  const BorderSide(width: 1, color: AppColor.textcolornew),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14.sp),
-              borderSide: const BorderSide(
-                  width: 1, color: AppColor.textfieldbordercolor),
+              borderSide:
+                  const BorderSide(width: 1, color: AppColor.textcolornew),
             ),
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14.sp),
-              borderSide: BorderSide(width: 1.w, color: AppColor.hintcolor),
+              borderSide: BorderSide(width: 1.w, color: AppColor.textcolornew),
             ),
             hintStyle: TextStyle(
               fontSize: AppSizes.fontSmalle,

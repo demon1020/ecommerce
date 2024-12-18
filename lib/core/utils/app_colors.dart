@@ -9,7 +9,7 @@ class AppColor {
 
   //icon color
   static const iconcolor = Color(0xFF292A2E);
-  static const hintcolor = Color(0xFFC0BFBF);
+  static const hintcolor = Color(0xFF7F7C7C);
   static const primarytextcolor = Color(0xFF000000);
   static const black = Colors.black;
   static const white = Colors.white;

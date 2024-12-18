@@ -87,6 +87,7 @@ class _AddProductPageState extends State<AddProductPage> {
                                 return null;
                               },
                             ),
+                            SizedBox(height: 10.h),
                             AppTextField(
                               controller: _descriptionController,
                               title: "Product Description",
@@ -105,6 +106,7 @@ class _AddProductPageState extends State<AddProductPage> {
                                 return null;
                               },
                             ),
+                            SizedBox(height: 10.h),
                             AppTextField(
                               controller: _priceController,
                               title: "Product Price",
@@ -153,7 +155,7 @@ class _AddProductPageState extends State<AddProductPage> {
                                       fit: BoxFit.cover,
                                     ),
                                   ),
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 50),
                             Center(
                               child: AppPrimaryButton(
                                 label: "Add Product",
