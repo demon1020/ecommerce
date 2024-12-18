@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ecommerce/core.dart';
+import 'package:ecommerce/features/home/data/models/product_model.dart';
 
 import '../../../../core/data/repositories/hive_service.dart';
-import '../../../../core/di/injector.dart';
 import '../../../checkout/presentation/manager/checkout_bloc.dart';
 import '../../../checkout/presentation/manager/checkout_event.dart';
 import '../manager/home_bloc.dart';
@@ -79,34 +78,7 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 if (index < state.products.length) {
                   final product = state.products[index];
-                  return Card(
-                    elevation: 2,
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: ListTile(
-                      leading: product.image != null
-                          ? Image.network(
-                              product.image!,
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.cover,
-                            )
-                          : Icon(Icons.image_not_supported, size: 50),
-                      title: Text(
-                        product.title ?? 'No Name',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                          'Price: \$${product.price ?? 0}\nSeller: ${product.seller?.username ?? ''}'),
-                      trailing: ElevatedButton(
-                        onPressed: () {
-                          context
-                              .read<CheckoutBloc>()
-                              .add(AddProductToCart(product));
-                        },
-                        child: Text('Buy Now'),
-                      ),
-                    ),
-                  );
+                  return ProductCard(product: product);
                 } else {
                   return Center(child: CircularProgressIndicator());
                 }
@@ -123,6 +95,103 @@ class _HomePageState extends State<HomePage> {
             return SizedBox();
           }
         },
+      ),
+    );
+  }
+}
+
+class ProductCard extends StatelessWidget {
+  const ProductCard({
+    super.key,
+    required this.product,
+  });
+
+  final Product product;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          product.image != null
+              ? ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                  child: CachedNetworkImage(
+                    imageUrl: product.image!,
+                    width: ScreenUtil().screenWidth,
+                    height: ScreenUtil().screenHeight / 3,
+                    fit: BoxFit.cover,
+                  ),
+                )
+              : Icon(Icons.image_not_supported, size: 50),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppTextWidget(
+                  text: product.title ?? 'No Name',
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+                AppTextWidget(
+                  text: "Sold by: ${product.seller?.username}" ?? 'No Name',
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: AppTextWidget(
+                        text: "₹ ${product.price?.totalAmount?.amount}" ?? '0',
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                        color: AppColor.green,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SizedBox(height: 20, child: VerticalDivider()),
+                    // Expanded(
+                    //   child: InkWell(
+                    //     onTap: () {
+                    //       context
+                    //           .read<CheckoutBloc>()
+                    //           .add(AddProductToCart(product));
+                    //       Utils.snackBar("Product added to cart");
+                    //     },
+                    //     child: AppTextWidget(
+                    //       text: "Buy Now" ?? '0',
+                    //       fontSize: 18.sp,
+                    //       fontWeight: FontWeight.bold,
+                    //       color: AppColor.primary,
+                    //       textAlign: TextAlign.center,
+                    //     ),
+                    //   ),
+                    // ),
+                    Expanded(
+                      child: AppPrimaryButton(
+                        onClick: () {
+                          context
+                              .read<CheckoutBloc>()
+                              .add(AddProductToCart(product));
+                          Utils.snackBar("Product added to cart");
+                        },
+                        label: 'Buy Now',
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
