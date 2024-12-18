@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/data/repositories/hive_service.dart';
 import '../../../../core/di/injector.dart';
 import '../../../checkout/presentation/manager/checkout_bloc.dart';
 import '../../../checkout/presentation/manager/checkout_event.dart';
@@ -23,6 +24,8 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _productBloc = sl<ProductBloc>();
     _productBloc.add(LoadProductsEvent(initialPage));
+
+    CheckoutBloc(HiveService())..add(LoadCart());
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=

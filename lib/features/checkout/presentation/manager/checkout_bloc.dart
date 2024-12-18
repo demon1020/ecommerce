@@ -1,32 +1,51 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/data/repositories/hive_service.dart';
 import '../../../home/data/models/product_model.dart';
 import 'checkout_event.dart';
 import 'checkout_state.dart';
 
 class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
-  CheckoutBloc() : super(CheckoutState(cart: [], totalAmount: 0));
+  final HiveService hiveService;
 
-  Stream<CheckoutState> mapEventToState(CheckoutEvent event) async* {
-    if (event is AddProductToCart) {
-      final updatedCart = List<Product>.from(state.cart)..add(event.product);
-      final updatedTotalAmount = _calculateTotalAmount(updatedCart);
-      yield state.copyWith(cart: updatedCart, totalAmount: updatedTotalAmount);
-    } else if (event is RemoveProductFromCart) {
-      final updatedCart = List<Product>.from(state.cart)..remove(event.product);
-      final updatedTotalAmount = _calculateTotalAmount(updatedCart);
-      yield state.copyWith(cart: updatedCart, totalAmount: updatedTotalAmount);
-    } else if (event is Checkout) {
-      // Handle the checkout (mock process)
-      yield CheckoutState(
-          cart: [], totalAmount: 0); // Reset the cart after checkout
+  CheckoutBloc(this.hiveService) : super(CheckoutInitial()) {
+    on<AddProductToCart>(_onAddProductToCart);
+    on<LoadCart>(_onLoadCart);
+  }
+
+  Future<void> _onAddProductToCart(
+      AddProductToCart event, Emitter<CheckoutState> emit) async {
+    try {
+      emit(CheckoutLoading());
+      await hiveService.addProductToCart(event.product);
+      final cartProducts = await hiveService.getCartProducts();
+      emit(CheckoutLoaded(cartProducts));
+    } catch (e) {
+      emit(CheckoutError("Failed to add product to cart"));
     }
   }
 
-  int _calculateTotalAmount(List<Product> cart) {
-    return cart.fold(
-        0,
-        (sum, product) =>
-            sum + (int.parse(product.price!.totalAmount!.amount!) ?? 0));
+  Future<void> _onLoadCart(LoadCart event, Emitter<CheckoutState> emit) async {
+    try {
+      emit(CheckoutLoading());
+      final cartProducts = await hiveService.getCartProducts();
+      emit(CheckoutLoaded(cartProducts));
+    } catch (e) {
+      emit(CheckoutError("Failed to load cart"));
+    }
+  }
+
+  double calculateCartTotal(List<Product> cartProducts) {
+    double total = 0.0;
+
+    try {
+      for (var product in cartProducts) {
+        total += double.parse(product.price!.totalAmount!.amount!);
+      }
+    } catch (e) {
+      return 0;
+    }
+
+    return total;
   }
 }

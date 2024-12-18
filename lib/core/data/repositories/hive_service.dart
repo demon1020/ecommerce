@@ -87,4 +87,15 @@ class HiveService {
   //     }
   //   }
   // }
+
+  Future<void> addProductToCart(Product product) async {
+    final box = await Hive.openBox<Product>(cartProductsBoxName);
+    await box.put(
+        int.parse(product.productId.toString().substring(5, 10)), product);
+  }
+
+  Future<List<Product>> getCartProducts() async {
+    final box = await Hive.openBox<Product>(cartProductsBoxName);
+    return box.values.toList();
+  }
 }
