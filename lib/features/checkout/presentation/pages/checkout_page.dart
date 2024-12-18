@@ -22,14 +22,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
         child: BlocConsumer<CheckoutBloc, CheckoutState>(
           listener: (context, state) {
             if (state is CheckoutPaymentSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Payment Successful!')),
-              );
+              Utils.snackBar("Payment Successful!");
             } else if (state is CheckoutPaymentFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content: Text('Payment Failed: ${state.errorMessage}')),
-              );
+              Utils.snackBar("Payment Failed: ${state.errorMessage}");
             }
           },
           builder: (context, state) {

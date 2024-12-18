@@ -85,12 +85,12 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
           await sales.addAll(commonProducts);
           await HiveService.clear<Product>(HiveService.cartProductsBoxName);
           print("Payment Success: ${response.paymentId}");
-          emit(CheckoutPaymentSuccess());
+          // emit(CheckoutPaymentSuccess());
         },
         paymentFailureCallback: (response) {
           // Handle payment failure
           print("Payment Failed: ${response.message}");
-          emit(CheckoutPaymentFailure(response.message.toString()));
+          // emit(CheckoutPaymentFailure(response.message.toString()));
         },
       );
 

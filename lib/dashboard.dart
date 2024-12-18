@@ -43,14 +43,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
+            backgroundColor: AppColor.primary,
             icon: Icon(Icons.add),
             label: 'Add Products',
           ),
           BottomNavigationBarItem(
+            backgroundColor: AppColor.primary,
             icon: Icon(Icons.account_circle),
             label: 'Profile',
           ),
           BottomNavigationBarItem(
+            backgroundColor: AppColor.primary,
             icon: Icon(Icons.shopping_cart),
             label: 'Cart',
           ),
