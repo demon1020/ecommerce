@@ -19,7 +19,8 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
     try {
       // Create Product object
       final product = Product(
-        productId: DateTime.now().millisecondsSinceEpoch,
+        productId: int.parse(
+            DateTime.now().millisecondsSinceEpoch.toString().substring(0, 5)),
         title: event.name,
         price: Price(totalAmount: Amount(amount: event.price.toString())),
         seller: Seller(username: "Ram"),
@@ -28,7 +29,7 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
       // Save to Hive
       final box =
           await HiveService.openBox<Product>(HiveService.productsBoxName);
-      box.put(product.productId, product);
+      box.add(product);
 
       emit(AddProductSuccess());
     } catch (e) {
