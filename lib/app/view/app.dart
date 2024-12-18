@@ -17,10 +17,10 @@ class App extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             routerConfig: routes.router,
             themeMode: ThemeMode.light,
-            theme: ThemeData(
+            theme: Theme.of(context).copyWith(
               useMaterial3: true,
-              fontFamily: GoogleFonts.inter().fontFamily,
-              // textTheme: GoogleFonts.poppins(),
+              primaryColor: AppColor.primary,
+              colorScheme: ColorScheme.light(onPrimary: AppColor.primary),
             ),
           ),
         );
