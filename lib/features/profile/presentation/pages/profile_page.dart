@@ -159,7 +159,6 @@ class ListedProducts extends StatelessWidget {
             List<Product> products = snapshot.data!;
             return ListView.builder(
               itemCount: products.length,
-              physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 var item = products[index];
                 return ProductItemCard(
@@ -195,7 +194,6 @@ class PurchasedProduct extends StatelessWidget {
             List<Product> products = snapshot.data!;
             return ListView.builder(
               itemCount: products.length,
-              physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 var item = products[index];
                 return ProductItemCard(
