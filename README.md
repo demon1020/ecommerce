@@ -82,6 +82,11 @@ User data (products, cart, and purchase history) is stored locally using **Hive*
 - **Pagination** is implemented by fetching a set of products at a time (e.g., 20 products per page) and loading more products as the user scrolls or clicks on a "Load More" button.
 - This technique ensures efficient performance, especially with large product catalogs.
 
+
+## Bonus
+
+## Local Search functionality allows users to search for products by name or description. The search results are filtered dynamically as the user types, ensuring a fast and responsive experience.
+
 ## Image Caching
 
 - The app uses the **[CachedNetworkImage](https://pub.dev/packages/cached_network_image)** package to cache product images.

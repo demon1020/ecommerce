@@ -157,16 +157,20 @@ class ListedProducts extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData) {
             List<Product> products = snapshot.data!;
-            return ListView.builder(
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                var item = products[index];
-                return ProductItemCard(
-                  product: item,
-                  hideDelete: true,
-                );
-              },
-            );
+            return products.isEmpty
+                ? Center(
+                    child: Text('No products'),
+                  )
+                : ListView.builder(
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      var item = products[index];
+                      return ProductItemCard(
+                        product: item,
+                        hideDelete: true,
+                      );
+                    },
+                  );
           } else {
             return Center(child: Text('Create products!'));
           }
@@ -192,16 +196,20 @@ class PurchasedProduct extends StatelessWidget {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData) {
             List<Product> products = snapshot.data!;
-            return ListView.builder(
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                var item = products[index];
-                return ProductItemCard(
-                  product: item,
-                  hideDelete: true,
-                );
-              },
-            );
+            return products.isEmpty
+                ? Center(
+                    child: Text('No products'),
+                  )
+                : ListView.builder(
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      var item = products[index];
+                      return ProductItemCard(
+                        product: item,
+                        hideDelete: true,
+                      );
+                    },
+                  );
           } else {
             return Center(child: Text('Create products!'));
           }

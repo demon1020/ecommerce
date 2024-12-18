@@ -33,6 +33,13 @@ class _AddProductPageState extends State<AddProductPage> {
     }
   }
 
+  reset() {
+    _nameController.text = "";
+    _descriptionController.text = "";
+    _priceController.text = "";
+    _imagePath = null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +49,8 @@ class _AddProductPageState extends State<AddProductPage> {
       body: BlocConsumer<AddProductBloc, AddProductState>(
         listener: (context, state) {
           if (state is AddProductSuccess) {
+            reset();
+
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Product added successfully!')),
             );
