@@ -1,5 +1,6 @@
 import 'package:ecommerce/core.dart';
 import 'package:ecommerce/features/checkout/presentation/manager/checkout_event.dart';
+import 'package:ecommerce/features/home/data/models/product_model.dart';
 
 import '../manager/checkout_bloc.dart';
 import '../manager/checkout_state.dart';
@@ -44,43 +45,37 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           itemCount: state.cartProducts.length,
                           itemBuilder: (context, index) {
                             final product = state.cartProducts[index];
-                            return ListTile(
-                              title: Text(product.title ?? 'No Name'),
-                              subtitle: Text(
-                                  '₹${product.price!.totalAmount!.amount!}'),
-                              trailing: IconButton(
-                                icon: Icon(Icons.remove_circle),
-                                onPressed: () {
-                                  // Remove product from cart
-                                  context
-                                      .read<CheckoutBloc>()
-                                      .add(RemoveFromCart(product));
-                                },
-                              ),
-                            );
+                            return ProductItemCard(product: product);
                           },
                         ),
                       ),
+                      // Divider(),
                       Container(
                         width: ScreenUtil().screenWidth,
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                                'Total : ${bloc.calculateCartTotal(state.cartProducts)}'),
-                            SizedBox(
-                              width: ScreenUtil().screenWidth / 3,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  // Proceed to checkout
+                            Expanded(
+                              child: AppTextWidget(
+                                text:
+                                    '₹${bloc.calculateCartTotal(state.cartProducts)}',
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
+                                color: AppColor.green,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Expanded(
+                              child: AppPrimaryButton(
+                                onClick: () {
                                   context.read<CheckoutBloc>().add(
                                       InitiatePayment(
                                           bloc.calculateCartTotal(
                                               state.cartProducts),
                                           "hgfhgfvhghv"));
                                 },
-                                child: Text('Checkout'),
+                                label: 'Checkout',
                               ),
                             ),
                           ],
@@ -100,6 +95,60 @@ class _CheckoutPageState extends State<CheckoutPage> {
           }
         },
       ),
+    );
+  }
+}
+
+class ProductItemCard extends StatelessWidget {
+  const ProductItemCard({
+    super.key,
+    required this.product,
+    this.hideDelete = false,
+  });
+
+  final Product product;
+  final bool hideDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: product.image != null
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: CachedNetworkImage(
+                imageUrl: product.image!,
+                width: 50.h,
+                height: 50.h,
+                fit: BoxFit.cover,
+              ),
+            )
+          : Icon(Icons.image_not_supported, size: 50),
+      title: AppTextWidget(
+        text: product.title,
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w700,
+        maxLines: 2,
+        textOverflow: TextOverflow.ellipsis,
+      ),
+      subtitle: AppTextWidget(
+        text: '₹${product.price!.totalAmount!.amount!}',
+        fontSize: 14.sp,
+        fontWeight: FontWeight.bold,
+        maxLines: 2,
+        textOverflow: TextOverflow.ellipsis,
+      ),
+      trailing: hideDelete
+          ? null
+          : IconButton(
+              icon: Icon(
+                Icons.remove_circle,
+                color: AppColor.red,
+              ),
+              onPressed: () {
+                // Remove product from cart
+                context.read<CheckoutBloc>().add(RemoveFromCart(product));
+              },
+            ),
     );
   }
 }
