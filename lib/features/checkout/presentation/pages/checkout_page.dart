@@ -48,9 +48,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           icon: Icon(Icons.remove_circle),
                           onPressed: () {
                             // Remove product from cart
-                            // context
-                            //     .read<CheckoutBloc>()
-                            //     .add(RemoveProductFromCart(product));
+                            context
+                                .read<CheckoutBloc>()
+                                .add(RemoveFromCart(product));
                           },
                         ),
                       );

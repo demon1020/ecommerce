@@ -9,8 +9,17 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
 
   CheckoutBloc(this.hiveService) : super(CheckoutInitial()) {
     on<AddProductToCart>(_onAddProductToCart);
+    on<RemoveFromCart>(_onRemoveProductFromCart);
+
     on<LoadCart>(_onLoadCart);
     on<InitiatePayment>(_onInitiatePayment);
+  }
+  Future<void> _onRemoveProductFromCart(
+      RemoveFromCart event, Emitter<CheckoutState> emit) async {
+    emit(CheckoutLoading());
+    await hiveService.removeProductFromCart(event.product);
+    final cartProducts = await hiveService.getCartProducts();
+    emit(CheckoutLoaded(cartProducts));
   }
 
   Future<void> _onAddProductToCart(

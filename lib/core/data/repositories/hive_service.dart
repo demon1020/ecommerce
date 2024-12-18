@@ -94,6 +94,16 @@ class HiveService {
         int.parse(product.productId.toString().substring(5, 10)), product);
   }
 
+  Future<void> removeProductFromCart(Product product) async {
+    final box = await Hive.openBox<Product>(cartProductsBoxName);
+    final key = int.parse(product.productId.toString().substring(5, 10));
+    if (box.containsKey(key)) {
+      await box.delete(key);
+    } else {
+      print("Product with key $key not found in the cart");
+    }
+  }
+
   Future<List<Product>> getCartProducts() async {
     final box = await Hive.openBox<Product>(cartProductsBoxName);
     return box.values.toList();

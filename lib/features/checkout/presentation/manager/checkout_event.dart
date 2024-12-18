@@ -18,6 +18,15 @@ class AddProductToCart extends CheckoutEvent {
   List<Object> get props => [product];
 }
 
+class RemoveFromCart extends CheckoutEvent {
+  final Product product;
+
+  const RemoveFromCart(this.product);
+
+  @override
+  List<Object> get props => [product];
+}
+
 class LoadCart extends CheckoutEvent {}
 
 class InitiatePayment extends CheckoutEvent {
