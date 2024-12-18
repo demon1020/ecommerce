@@ -13,3 +13,12 @@ class LoadProductsEvent extends ProductEvent {
   @override
   List<Object?> get props => [page];
 }
+
+class SearchProductsEvent extends ProductEvent {
+  final String query;
+
+  SearchProductsEvent(this.query);
+
+  @override
+  List<Object?> get props => [query];
+}

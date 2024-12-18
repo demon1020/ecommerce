@@ -52,6 +52,24 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Products'),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(50.0),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search products...',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onChanged: (query) {
+                _productBloc.add(SearchProductsEvent(query)); // Trigger search.
+              },
+            ),
+          ),
+        ),
       ),
       body: BlocConsumer<ProductBloc, ProductState>(
         bloc: _productBloc,
@@ -70,20 +88,24 @@ class _HomePageState extends State<HomePage> {
               state is ProductLoading && state is! ProductLoaded) {
             return Center(child: CircularProgressIndicator());
           } else if (state is ProductLoaded) {
-            return ListView.builder(
-              controller: _scrollController,
-              itemCount: state.hasReachedMax
-                  ? state.products.length
-                  : state.products.length + 1,
-              itemBuilder: (context, index) {
-                if (index < state.products.length) {
-                  final product = state.products[index];
-                  return ProductCard(product: product);
-                } else {
-                  return Center(child: CircularProgressIndicator());
-                }
-              },
-            );
+            return state.products.isEmpty
+                ? Center(
+                    child: Text('product not found'),
+                  )
+                : ListView.builder(
+                    controller: _scrollController,
+                    itemCount: state.hasReachedMax
+                        ? state.products.length
+                        : state.products.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index < state.products.length) {
+                        final product = state.products[index];
+                        return ProductCard(product: product);
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  );
           } else if (state is ProductError) {
             return Center(
               child: Text(
