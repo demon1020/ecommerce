@@ -22,6 +22,7 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
         productId: int.parse(
             DateTime.now().millisecondsSinceEpoch.toString().substring(0, 5)),
         title: event.name,
+        image: event.imagePath,
         price: Price(totalAmount: Amount(amount: event.price.toString())),
         seller: Seller(username: "Ram"),
       );

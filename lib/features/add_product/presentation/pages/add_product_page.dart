@@ -1,6 +1,8 @@
 import 'package:ecommerce/core.dart';
 import 'package:ecommerce/core/data/repositories/hive_service.dart';
+import 'package:flutter/services.dart';
 
+import '../../../checkout/presentation/pages/checkout_page.dart';
 import '../../../home/data/models/product_model.dart';
 import '../manager/add_product_bloc.dart';
 import '../manager/add_product_event.dart';
@@ -70,45 +72,95 @@ class _AddProductPageState extends State<AddProductPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            TextFormField(
+                            AppTextField(
                               controller: _nameController,
-                              decoration: const InputDecoration(
-                                  labelText: 'Product Name'),
-                              validator: (value) => value!.isEmpty
-                                  ? 'Enter a product name'
-                                  : null,
+                              title: "Product Name",
+                              hintText: "Enter product name",
+                              inputFormatter: [],
+                              enabled: true,
+                              maxLines: 1,
+                              keyboardType: TextInputType.text,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Product name cannot be empty';
+                                }
+                                if (value.length < 3) {
+                                  return 'Product name must be at least 3 characters';
+                                }
+                                return null;
+                              },
                             ),
-                            TextFormField(
+                            AppTextField(
                               controller: _descriptionController,
-                              decoration: const InputDecoration(
-                                  labelText: 'Description'),
-                              validator: (value) =>
-                                  value!.isEmpty ? 'Enter a description' : null,
+                              title: "Product Description",
+                              hintText: "Enter product description",
+                              inputFormatter: [],
+                              enabled: true,
+                              maxLines: 3,
+                              keyboardType: TextInputType.text,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Description cannot be empty';
+                                }
+                                if (value.length < 10) {
+                                  return 'Description must be at least 10 characters';
+                                }
+                                return null;
+                              },
                             ),
-                            TextFormField(
+                            AppTextField(
                               controller: _priceController,
+                              title: "Product Price",
+                              hintText: "Enter product price",
+                              inputFormatter: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              enabled: true,
+                              maxLines: 1,
                               keyboardType: TextInputType.number,
-                              decoration:
-                                  const InputDecoration(labelText: 'Price'),
-                              validator: (value) =>
-                                  value!.isEmpty ? 'Enter a price' : null,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a product price';
+                                }
+
+                                final parsedValue = int.tryParse(value);
+                                if (parsedValue == null || parsedValue <= 0) {
+                                  return 'Please enter a valid price greater than 0';
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 20),
                             _imagePath == null
-                                ? ElevatedButton(
-                                    onPressed: _pickImage,
-                                    child: const Text('Upload Product Image'),
+                                ? SizedBox(
+                                    height: 100.h,
+                                    width: ScreenUtil().screenWidth,
+                                    child: OutlinedButton(
+                                      onPressed: _pickImage,
+                                      style: OutlinedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              10), // Setting border radius
+                                        ),
+                                      ),
+                                      child:
+                                          const Text('+ Upload Product Image'),
+                                    ),
                                   )
-                                : Image.file(
-                                    File(_imagePath!),
-                                    height: 150,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
+                                : ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.file(
+                                      File(_imagePath!),
+                                      height: 150,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                             const SizedBox(height: 20),
                             Center(
-                              child: ElevatedButton(
-                                onPressed: () {
+                              child: AppPrimaryButton(
+                                label: "Add Product",
+                                onClick: () {
                                   if (_formKey.currentState!.validate() &&
                                       _imagePath != null) {
                                     context.read<AddProductBloc>().add(
@@ -122,14 +174,15 @@ class _AddProductPageState extends State<AddProductPage> {
                                           ),
                                         );
                                   } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content:
-                                              Text('Please fill all fields')),
-                                    );
+                                    if (_imagePath == null) {
+                                      return Utils.snackBar(
+                                          "Please upload image",
+                                          result: Result.error);
+                                    }
+                                    Utils.snackBar("Please fill all fields",
+                                        result: Result.error);
                                   }
                                 },
-                                child: const Text('Add Product'),
                               ),
                             ),
                           ],
@@ -155,8 +208,10 @@ class _AddProductPageState extends State<AddProductPage> {
                             itemCount: products.length,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text(products[index].title!),
+                              var item = products[index];
+                              return ProductItemCard(
+                                product: item,
+                                hideDelete: true,
                               );
                             },
                           );
