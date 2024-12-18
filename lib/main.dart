@@ -6,6 +6,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await HiveService.init();
+  await dotenv.load(fileName: ".env");
+
   // await HiveService.saveProductsFromJson();
 
   runApp(const App());

@@ -19,3 +19,13 @@ class AddProductToCart extends CheckoutEvent {
 }
 
 class LoadCart extends CheckoutEvent {}
+
+class InitiatePayment extends CheckoutEvent {
+  final double amount;
+  final String orderId;
+
+  const InitiatePayment(this.amount, this.orderId);
+
+  @override
+  List<Object> get props => [amount, orderId];
+}

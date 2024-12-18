@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:ecommerce/features/checkout/presentation/manager/checkout_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,16 +19,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
       appBar: AppBar(title: Text('Checkout')),
       body: BlocConsumer<CheckoutBloc, CheckoutState>(
         listener: (context, state) {
-          // Show a mock message when checkout is successful
-          log(state.toString());
-          if (state is CheckoutSuccess) {
+          if (state is CheckoutPaymentSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Checkout successful!')),
+              const SnackBar(content: Text('Payment Successful!')),
             );
-          }
-          if (state is CheckoutLoaded) {
+          } else if (state is CheckoutPaymentFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Checkout CheckoutLoaded!')),
+              SnackBar(content: Text('Payment Failed: ${state.errorMessage}')),
             );
           }
         },
@@ -74,7 +70,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         child: ElevatedButton(
                           onPressed: () {
                             // Proceed to checkout
-                            // context.read<CheckoutBloc>().add(Checkout());
+                            context.read<CheckoutBloc>().add(InitiatePayment(
+                                bloc.calculateCartTotal(state.cartProducts),
+                                "hgfhgfvhghv"));
                           },
                           child: Text('Checkout'),
                         ),

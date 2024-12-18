@@ -39,3 +39,16 @@ class CheckoutSuccess extends CheckoutState {
   @override
   List<Object> get props => [cartProducts];
 }
+
+class CheckoutPaymentProcessing extends CheckoutState {}
+
+class CheckoutPaymentSuccess extends CheckoutState {}
+
+class CheckoutPaymentFailure extends CheckoutState {
+  final String errorMessage;
+
+  const CheckoutPaymentFailure(this.errorMessage);
+
+  @override
+  List<Object> get props => [errorMessage];
+}

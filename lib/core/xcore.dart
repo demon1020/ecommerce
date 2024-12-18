@@ -11,6 +11,7 @@ export 'network/dio_api_service.dart';
 //Response
 export 'response/base_api_response.dart';
 export 'response/parser.dart';
+export 'services/razorpay_service.dart';
 export 'utils/xcore.dart';
 //validation
 export 'validation/validator.dart';

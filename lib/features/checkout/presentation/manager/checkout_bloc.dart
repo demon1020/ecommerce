@@ -1,5 +1,4 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-
+import '../../../../core.dart';
 import '../../../../core/data/repositories/hive_service.dart';
 import '../../../home/data/models/product_model.dart';
 import 'checkout_event.dart';
@@ -11,6 +10,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   CheckoutBloc(this.hiveService) : super(CheckoutInitial()) {
     on<AddProductToCart>(_onAddProductToCart);
     on<LoadCart>(_onLoadCart);
+    on<InitiatePayment>(_onInitiatePayment);
   }
 
   Future<void> _onAddProductToCart(
@@ -47,5 +47,36 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     }
 
     return total;
+  }
+
+  Future<void> _onInitiatePayment(
+      InitiatePayment event, Emitter<CheckoutState> emit) async {
+    emit(CheckoutPaymentProcessing());
+
+    try {
+      RazorpayService razorpayService = RazorpayService(
+        paymentSuccessCallback: (response) {
+          // Handle payment success
+          print("Payment Success: ${response.paymentId}");
+          emit(CheckoutPaymentSuccess());
+        },
+        paymentFailureCallback: (response) {
+          // Handle payment failure
+          print("Payment Failed: ${response.message}");
+          emit(CheckoutPaymentFailure(response.message.toString()));
+        },
+      );
+
+      await razorpayService.openCheckout(
+        amount: event.amount,
+        orderId: event.orderId,
+        companyName: "Cidroy",
+        paymentDescription: "Purchase",
+        email: "user@example.com",
+        contact: "9988776577",
+      );
+    } catch (e) {
+      emit(CheckoutPaymentFailure("Payment process failed"));
+    }
   }
 }

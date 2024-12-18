@@ -16,7 +16,10 @@ class Providers {
           create: (context) => ProductBloc(sl<ProductUseCase>())),
       BlocProvider<AddProductBloc>(create: (context) => AddProductBloc()),
       BlocProvider<CheckoutBloc>(
-          create: (context) => CheckoutBloc(HiveService())),
+        create: (context) => CheckoutBloc(
+          HiveService(),
+        ),
+      ),
       BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
     ];
   }

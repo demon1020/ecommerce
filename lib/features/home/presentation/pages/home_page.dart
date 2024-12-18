@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     _productBloc = sl<ProductBloc>();
     _productBloc.add(LoadProductsEvent(initialPage));
 
-    CheckoutBloc(HiveService())..add(LoadCart());
+    CheckoutBloc(HiveService()).add(LoadCart());
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=

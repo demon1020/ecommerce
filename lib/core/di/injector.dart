@@ -1,5 +1,4 @@
 import 'package:ecommerce/core/data/repositories/hive_service.dart';
-import 'package:ecommerce/features/checkout/presentation/manager/checkout_bloc.dart';
 import 'package:ecommerce/features/home/data/data_sources/home_remote_data_source.dart';
 import 'package:ecommerce/features/home/data/repositories/home_repository_impl.dart';
 import 'package:ecommerce/features/home/domain/use_cases/product_use_case.dart';
@@ -36,5 +35,5 @@ void setupServiceLocator() {
   // Register Bloc
   sl.registerFactory<ProductBloc>(() => ProductBloc(sl<ProductUseCase>()));
 
-  sl.registerFactory<CheckoutBloc>(() => CheckoutBloc(sl<HiveService>()));
+  // sl.registerFactory<CheckoutBloc>(() => CheckoutBloc(sl<HiveService>(),));
 }
