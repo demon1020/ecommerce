@@ -21,7 +21,7 @@ class NetworkApiService extends BaseApiServices {
   @override
   Future<Either<AppException, Q>> getApi<Q, R>(String apiURL,
       Map<String, String> headers, ComputeCallback<String, R> callback,
-      {disableTokenValidityCheck = false}) async {
+      {disableTokenValidityCheck = false, Map<String, String>? query}) async {
     try {
       await connectivity.ensureInternetConnectivity();
       // await checkForValidSession(disableTokenValidityCheck);
@@ -31,10 +31,7 @@ class NetworkApiService extends BaseApiServices {
       );
 
       Response response = await _dio
-          .get(
-            apiURL,
-            options: options,
-          )
+          .get(apiURL, options: options, queryParameters: query)
           .timeout(apiTimeOut);
 
       return Parser.parseResponse(response, callback);

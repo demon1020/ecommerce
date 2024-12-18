@@ -13,7 +13,7 @@ class HomeRemoteDataSource {
       ApiUrl.productsApi,
       {"x-rapidapi-key": "a3326c45d7msh893a5b8de13f51bp12d083jsnf71b128614d8"},
       Parser.parseProductResponse,
-      // body: request.toJson(),
+      query: {"page": request},
     );
   }
 }

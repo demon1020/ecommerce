@@ -8,6 +8,7 @@ import 'home_state.dart';
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   static const int itemsPerPage = 10;
   final ProductUseCase productUseCase;
+  bool loaded = false;
 
   ProductBloc(this.productUseCase) : super(ProductInitial()) {
     on<LoadProductsEvent>(_onLoadProducts);
@@ -23,11 +24,18 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       emit(ProductLoading());
 
       Either<AppException, List<Product>> result =
-          await productUseCase.execute(event.page);
+          await productUseCase.execute(event.page.toString());
 
       result.fold(
         (l) => emit(ProductError(l.message)),
-        (r) => emit(ProductLoaded(products: r, hasReachedMax: false)),
+        (r) {
+          if (loaded) {
+            emit(ProductLoaded(products: r, hasReachedMax: false));
+          } else {
+            emit(ProductLoaded(products: [...r], hasReachedMax: false));
+          }
+          loaded = true;
+        },
       );
     } catch (e) {
       emit(ProductError(e.toString()));

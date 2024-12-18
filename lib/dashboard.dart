@@ -12,10 +12,8 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  // Index to track the currently selected bottom navigation item
   int _selectedIndex = 0;
 
-  // List of screens to display based on the bottom navigation selection
   final List<Widget> _screens = [
     HomePage(),
     AddProductPage(),
@@ -23,7 +21,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     CheckoutPage(),
   ];
 
-  // Function to handle item selection from BottomNavigationBar
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -41,19 +38,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
         onTap: _onItemTapped,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.black),
+            icon: Icon(Icons.home),
+            backgroundColor: AppColor.primary,
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add, color: Colors.black),
-            label: 'Products',
+            icon: Icon(Icons.add),
+            label: 'Add Products',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle, color: Colors.black),
+            icon: Icon(Icons.account_circle),
             label: 'Profile',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart, color: Colors.black),
+            icon: Icon(Icons.shopping_cart),
             label: 'Cart',
           ),
         ],

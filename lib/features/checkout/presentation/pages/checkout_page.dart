@@ -2,6 +2,7 @@ import 'package:ecommerce/core.dart';
 import 'package:ecommerce/features/checkout/presentation/manager/checkout_event.dart';
 import 'package:ecommerce/features/home/data/models/product_model.dart';
 
+import '../../../../core/data/repositories/hive_service.dart';
 import '../manager/checkout_bloc.dart';
 import '../manager/checkout_state.dart';
 
@@ -11,6 +12,13 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
+  @override
+  void initState() {
+    super.initState();
+    CheckoutBloc(HiveService()).add(LoadCart());
+    CheckoutBloc(HiveService()).add(LoadCart());
+  }
+
   @override
   Widget build(BuildContext context) {
     var bloc = context.read<CheckoutBloc>();

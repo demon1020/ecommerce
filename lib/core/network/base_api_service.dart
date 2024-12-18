@@ -9,12 +9,9 @@ abstract class BaseApiServices {
     disableTokenValidityCheck = false,
   });
 
-  Future<Either<AppException, Q>> getApi<Q, R>(
-    String apiURL,
-    Map<String, String> headers,
-    ComputeCallback<String, R> callback, {
-    disableTokenValidityCheck = false,
-  });
+  Future<Either<AppException, Q>> getApi<Q, R>(String apiURL,
+      Map<String, String> headers, ComputeCallback<String, R> callback,
+      {disableTokenValidityCheck = false, Map<String, String>? query});
 
   Future<Either<AppException, Q>> multipartApi<Q, R>(
     String apiURL,

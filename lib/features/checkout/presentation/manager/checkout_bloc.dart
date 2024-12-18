@@ -7,7 +7,7 @@ import 'checkout_state.dart';
 class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   final HiveService hiveService;
 
-  CheckoutBloc(this.hiveService) : super(CheckoutInitial()) {
+  CheckoutBloc(this.hiveService) : super(CheckoutLoading()) {
     on<AddProductToCart>(_onAddProductToCart);
     on<RemoveFromCart>(_onRemoveProductFromCart);
 
