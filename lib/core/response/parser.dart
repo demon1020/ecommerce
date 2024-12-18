@@ -29,7 +29,6 @@ class Parser {
 
   static Future<List<Product>> parseProductResponse(String responseBody) async {
     final List<dynamic> jsonData = json.decode(responseBody);
-    print(jsonData);
     return jsonData.map((data) => Product.fromJson(data)).toList();
   }
 }

@@ -7,15 +7,15 @@ class NetworkApiService extends BaseApiServices {
   final connectivity = sl<ConnectivityServiceRepositoryImpl>();
 
   NetworkApiService() {
-    _dio.interceptors.add(PrettyDioLogger(
-      request: true,
-      requestHeader: true,
-      requestBody: true,
-      responseBody: true,
-      responseHeader: true,
-      error: true,
-      compact: false,
-    ));
+    // _dio.interceptors.add(PrettyDioLogger(
+    //   request: true,
+    //   requestHeader: true,
+    //   requestBody: true,
+    //   responseBody: true,
+    //   responseHeader: true,
+    //   error: true,
+    //   compact: false,
+    // ));
   }
 
   @override
