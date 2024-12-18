@@ -114,15 +114,17 @@ class ProductItemCard extends StatelessWidget {
     return ListTile(
       leading: product.image != null
           ? hideDelete
-              ? ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.file(
-                    File(product.image!),
-                    width: 50.h,
-                    height: 50.h,
-                    fit: BoxFit.cover,
-                  ),
-                )
+              ? File(product.image!).existsSync()
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.file(
+                        File(product.image!),
+                        width: 50.h,
+                        height: 50.h,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : Icon(Icons.image_not_supported, size: 50)
               : ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: CachedNetworkImage(

@@ -1,6 +1,7 @@
 import 'package:ecommerce/core.dart';
 
 import '../../../../core/data/repositories/hive_service.dart';
+import '../../../checkout/presentation/pages/checkout_page.dart';
 import '../../../home/data/models/product_model.dart';
 import '../manager/profile_bloc.dart';
 import '../manager/profile_event.dart';
@@ -12,6 +13,12 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  int currentSelection = 0;
+  static final List<Widget> _widgetOptions = <Widget>[
+    ListedProducts(),
+    PurchasedProduct(),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -80,28 +87,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
                 SizedBox(height: 20),
-                Text(
-                  'Products Listed:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                AppSlidingSegmentController(
+                  name1: "Product Listed",
+                  name2: "Product Purchased",
+                  borderRadius: 10,
+                  onTap: (index) {
+                    currentSelection = index;
+                    setState(() {});
+                  },
                 ),
-                Expanded(
-                  child: FutureBuilder<List<Product>>(
-                    future: HiveService.getAll<Product>(
-                        HiveService.productsBoxName),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else if (snapshot.hasData) {
-                        List<Product> products = snapshot.data!;
-                        return Text(snapshot.data!.length.toString());
-                      } else {
-                        return Center(child: Text('Create products!'));
-                      }
-                    },
-                  ),
-                ),
+                _widgetOptions[currentSelection],
               ],
             ),
           );
@@ -141,6 +136,78 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ListedProducts extends StatelessWidget {
+  const ListedProducts({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: ScreenUtil().screenHeight / 2,
+      child: FutureBuilder<List<Product>>(
+        future: HiveService.getAll<Product>(HiveService.productsBoxName),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            List<Product> products = snapshot.data!;
+            return ListView.builder(
+              itemCount: products.length,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                var item = products[index];
+                return ProductItemCard(
+                  product: item,
+                  hideDelete: true,
+                );
+              },
+            );
+          } else {
+            return Center(child: Text('Create products!'));
+          }
+        },
+      ),
+    );
+  }
+}
+
+class PurchasedProduct extends StatelessWidget {
+  const PurchasedProduct({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: ScreenUtil().screenHeight / 2,
+      child: FutureBuilder<List<Product>>(
+        future: HiveService.getAll<Product>(HiveService.purchaseBox),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            List<Product> products = snapshot.data!;
+            return ListView.builder(
+              itemCount: products.length,
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                var item = products[index];
+                return ProductItemCard(
+                  product: item,
+                  hideDelete: true,
+                );
+              },
+            );
+          } else {
+            return Center(child: Text('Create products!'));
+          }
+        },
       ),
     );
   }

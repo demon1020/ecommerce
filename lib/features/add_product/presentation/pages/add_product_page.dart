@@ -1,9 +1,6 @@
 import 'package:ecommerce/core.dart';
-import 'package:ecommerce/core/data/repositories/hive_service.dart';
 import 'package:flutter/services.dart';
 
-import '../../../checkout/presentation/pages/checkout_page.dart';
-import '../../../home/data/models/product_model.dart';
 import '../manager/add_product_bloc.dart';
 import '../manager/add_product_event.dart';
 import '../manager/add_product_state.dart';
@@ -188,37 +185,6 @@ class _AddProductPageState extends State<AddProductPage> {
                           ],
                         ),
                       ),
-                    ),
-                  ),
-                  Divider(),
-                  Expanded(
-                    child: FutureBuilder<List<Product>>(
-                      future: HiveService.getAll<Product>(
-                          HiveService.productsBoxName),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Center(
-                              child: Text('Error: ${snapshot.error}'));
-                        } else if (snapshot.hasData) {
-                          List<Product> products = snapshot.data!;
-                          return ListView.builder(
-                            itemCount: products.length,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              var item = products[index];
-                              return ProductItemCard(
-                                product: item,
-                                hideDelete: true,
-                              );
-                            },
-                          );
-                        } else {
-                          return Center(child: Text('Create products!'));
-                        }
-                      },
                     ),
                   ),
                 ],
