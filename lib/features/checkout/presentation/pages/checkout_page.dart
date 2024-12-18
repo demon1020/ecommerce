@@ -13,95 +13,92 @@ class CheckoutPage extends StatefulWidget {
 
 class _CheckoutPageState extends State<CheckoutPage> {
   @override
-  void initState() {
-    super.initState();
-    CheckoutBloc(HiveService()).add(LoadCart());
-    CheckoutBloc(HiveService()).add(LoadCart());
-  }
-
-  @override
   Widget build(BuildContext context) {
     var bloc = context.read<CheckoutBloc>();
     return Scaffold(
       appBar: AppBar(title: Text('Checkout')),
-      body: BlocConsumer<CheckoutBloc, CheckoutState>(
-        listener: (context, state) {
-          if (state is CheckoutPaymentSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Payment Successful!')),
-            );
-          } else if (state is CheckoutPaymentFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Payment Failed: ${state.errorMessage}')),
-            );
-          }
-        },
-        builder: (context, state) {
-          if (state is CheckoutLoading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state is CheckoutLoaded) {
-            return state.cartProducts.isEmpty
-                ? Center(
-                    child: AppTextWidget(
-                      text: "Lets go Shopping!",
-                    ),
-                  )
-                : Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: state.cartProducts.length,
-                          itemBuilder: (context, index) {
-                            final product = state.cartProducts[index];
-                            return ProductItemCard(product: product);
-                          },
-                        ),
+      body: BlocProvider(
+        create: (context) => CheckoutBloc(HiveService())..add(LoadCart()),
+        child: BlocConsumer<CheckoutBloc, CheckoutState>(
+          listener: (context, state) {
+            if (state is CheckoutPaymentSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Payment Successful!')),
+              );
+            } else if (state is CheckoutPaymentFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content: Text('Payment Failed: ${state.errorMessage}')),
+              );
+            }
+          },
+          builder: (context, state) {
+            if (state is CheckoutLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is CheckoutLoaded) {
+              return state.cartProducts.isEmpty
+                  ? Center(
+                      child: AppTextWidget(
+                        text: "Lets go Shopping!",
                       ),
-                      // Divider(),
-                      Container(
-                        width: ScreenUtil().screenWidth,
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: AppTextWidget(
-                                text:
-                                    '₹${bloc.calculateCartTotal(state.cartProducts)}',
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.green,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            Expanded(
-                              child: AppPrimaryButton(
-                                onClick: () {
-                                  context.read<CheckoutBloc>().add(
-                                      InitiatePayment(
-                                          bloc.calculateCartTotal(
-                                              state.cartProducts),
-                                          "hgfhgfvhghv"));
-                                },
-                                label: 'Checkout',
-                              ),
-                            ),
-                          ],
+                    )
+                  : Column(
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: state.cartProducts.length,
+                            itemBuilder: (context, index) {
+                              final product = state.cartProducts[index];
+                              return ProductItemCard(product: product);
+                            },
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-          } else if (state is CheckoutError) {
-            return Center(
-              child: Text(
-                'Failed to load products. Please try again.',
-                style: TextStyle(color: Colors.red),
-              ),
-            );
-          } else {
-            return SizedBox();
-          }
-        },
+                        // Divider(),
+                        Container(
+                          width: ScreenUtil().screenWidth,
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: AppTextWidget(
+                                  text:
+                                      '₹${bloc.calculateCartTotal(state.cartProducts)}',
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.green,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Expanded(
+                                child: AppPrimaryButton(
+                                  onClick: () {
+                                    context.read<CheckoutBloc>().add(
+                                        InitiatePayment(
+                                            bloc.calculateCartTotal(
+                                                state.cartProducts),
+                                            "hgfhgfvhghv"));
+                                  },
+                                  label: 'Checkout',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+            } else if (state is CheckoutError) {
+              return Center(
+                child: Text(
+                  'Failed to load products. Please try again.',
+                  style: TextStyle(color: Colors.red),
+                ),
+              );
+            } else {
+              return SizedBox();
+            }
+          },
+        ),
       ),
     );
   }
