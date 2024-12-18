@@ -82,6 +82,10 @@ User data (products, cart, and purchase history) is stored locally using **Hive*
 - **Pagination** is implemented by fetching a set of products at a time (e.g., 20 products per page) and loading more products as the user scrolls or clicks on a "Load More" button.
 - This technique ensures efficient performance, especially with large product catalogs.
 
+## Set up Environment Variables:
+1. .env file is required in the root directory to run the app.
+2. Create a .env file in the root directory of the project.
+3. Add your Razorpay API key and any other sensitive information in the .env file.
 
 ## Bonus
 
