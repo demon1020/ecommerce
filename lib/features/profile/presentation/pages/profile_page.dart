@@ -58,10 +58,25 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Text(
-                        'Items Bought: ${state.itemsBought}',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                      Expanded(
+                        child: FutureBuilder<List<Product>>(
+                          future:
+                              HiveService.getAll<Product>(HiveService.salesBox),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                  child: Text('Error: ${snapshot.error}'));
+                            } else if (snapshot.hasData) {
+                              List<Product> products = snapshot.data!;
+                              return Text(snapshot.data!.length.toString());
+                            } else {
+                              return Center(child: Text('Create products!'));
+                            }
+                          },
+                        ),
                       ),
                       SizedBox(height: 20),
                       Text(
@@ -87,18 +102,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               return Center(child: Text('Create products!'));
                             }
                           },
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        'Products Purchased:',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      ...state.productsPurchased.map(
-                        (product) => ListTile(
-                          title: Text(product.title ?? 'No Name'),
-                          subtitle: Text('\$${product.price}'),
                         ),
                       ),
                     ],
