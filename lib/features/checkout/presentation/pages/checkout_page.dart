@@ -1,7 +1,5 @@
+import 'package:ecommerce/core.dart';
 import 'package:ecommerce/features/checkout/presentation/manager/checkout_event.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../manager/checkout_bloc.dart';
 import '../manager/checkout_state.dart';
@@ -33,55 +31,63 @@ class _CheckoutPageState extends State<CheckoutPage> {
           if (state is CheckoutLoading) {
             return Center(child: CircularProgressIndicator());
           } else if (state is CheckoutLoaded) {
-            return Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: state.cartProducts.length,
-                    itemBuilder: (context, index) {
-                      final product = state.cartProducts[index];
-                      return ListTile(
-                        title: Text(product.title ?? 'No Name'),
-                        subtitle:
-                            Text('₹${product.price!.totalAmount!.amount!}'),
-                        trailing: IconButton(
-                          icon: Icon(Icons.remove_circle),
-                          onPressed: () {
-                            // Remove product from cart
-                            context
-                                .read<CheckoutBloc>()
-                                .add(RemoveFromCart(product));
+            return state.cartProducts.isEmpty
+                ? Center(
+                    child: AppTextWidget(
+                      text: "Lets go Shopping!",
+                    ),
+                  )
+                : Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: state.cartProducts.length,
+                          itemBuilder: (context, index) {
+                            final product = state.cartProducts[index];
+                            return ListTile(
+                              title: Text(product.title ?? 'No Name'),
+                              subtitle: Text(
+                                  '₹${product.price!.totalAmount!.amount!}'),
+                              trailing: IconButton(
+                                icon: Icon(Icons.remove_circle),
+                                onPressed: () {
+                                  // Remove product from cart
+                                  context
+                                      .read<CheckoutBloc>()
+                                      .add(RemoveFromCart(product));
+                                },
+                              ),
+                            );
                           },
                         ),
-                      );
-                    },
-                  ),
-                ),
-                Container(
-                  width: ScreenUtil().screenWidth,
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                          'Total : ${bloc.calculateCartTotal(state.cartProducts)}'),
-                      SizedBox(
-                        width: ScreenUtil().screenWidth / 3,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // Proceed to checkout
-                            context.read<CheckoutBloc>().add(InitiatePayment(
-                                bloc.calculateCartTotal(state.cartProducts),
-                                "hgfhgfvhghv"));
-                          },
-                          child: Text('Checkout'),
+                      ),
+                      Container(
+                        width: ScreenUtil().screenWidth,
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                                'Total : ${bloc.calculateCartTotal(state.cartProducts)}'),
+                            SizedBox(
+                              width: ScreenUtil().screenWidth / 3,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // Proceed to checkout
+                                  context.read<CheckoutBloc>().add(
+                                      InitiatePayment(
+                                          bloc.calculateCartTotal(
+                                              state.cartProducts),
+                                          "hgfhgfvhghv"));
+                                },
+                                child: Text('Checkout'),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
-                  ),
-                ),
-              ],
-            );
+                  );
           } else if (state is CheckoutError) {
             return Center(
               child: Text(
